@@ -1,0 +1,12 @@
+.view-toggle {
+	height: 24px;
+	margin-right: 18px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 3px;
+}
+
+.view-toggle:hover {
+	background: #efefef;
+}

@@ -1,0 +1,10 @@
+{
+	"id": "files-list-view",
+	"name": "File Browser List View",
+	"author": "Jackie Chui",
+	"description": "Adds a List/Grid view toggle in the File Browser.",
+	"instructions": "Click on the List view icon next to the 'Sorted by' dropdown in the File Browser to toggle between List and Grid view.",
+	"images": ["screenshots/screenshot1.jpg", "screenshots/screenshot2.jpg"],
+	"js": ["app.js"],
+	"css": ["app.css"]
+}
