@@ -3,27 +3,27 @@ let foundSortButton = false;
 const style = document.createElement('style');
 style.type = 'text/css';
 style.innerHTML = `
-.file_tile--image--h8GAb {
+.file_tile__REFRESH--image--2LN1i {
 	display: none;
 }
 
-.file_tile--container--2_GSp {
+.file_tile__REFRESH--container--3sv1J {
 	height: 44px;
 	width: 100%;
 	margin-bottom: 2px;
 	flex-basis: unset;
 }
 
-.file_tiles_view--fileTiles--3NFU3 {
+.file_tiles_view__REFRESH--fileTiles--2s79s {
 	flex-flow: column;
 	padding-right: 22px;
 }
 
-.file_tile--lowerPart--2yZ4r {
+.file_tile__REFRESH--lowerPart--3oefg {
 	height: 40px;
 }
 
-.file_tile--lowerPartTitles--3mWT9 {
+.file_tile__REFRESH--lowerPartTitles--1BN4q {
 	flex-direction: row;
 	align-items: center;
 	height: 40px;
@@ -31,13 +31,13 @@ style.innerHTML = `
 	flex-basis: 0;
 }
 
-.file_tile--title--aGiDO {
+.file_tile__REFRESH--title--3_Joz {
 	margin-top: 0px;
 	flex-grow: 1;
 	flex-basis: 0;
 }
 
-.file_tile--subtitle--2Ycrg {
+.file_tile__REFRESH--subtitle--2Ddvq {
 	margin-top: 0px;
 	margin-bottom: 0px;
 	flex-grow: 1;
@@ -53,7 +53,7 @@ document.head.appendChild(style);
 style.disabled = !listView;
 
 const injectViewToggle = () => {
-	const sortButton = document.querySelector('div[class*="file_sort_filter--dropdownContainer--"]');
+	const sortButton = document.querySelector('div[class*="file_sort_filter__REFRESH--dropdownContainer--"]');
 	sortButton.parentElement.style.alignItems = 'center';
 	sortButton.style.marginRight = '12px';
 	const listViewButton = document.createElement('div');
@@ -103,7 +103,7 @@ figmaPlus.onDomChanged(mutations => {
 	if (!foundSortButton) {
 		for (mutation of mutations) {
 			if (!foundSortButton) {
-				if (document.querySelector('div[class*="file_sort_filter--dropdownContainer--"]')) {
+				if (document.querySelector('div[class*="file_sort_filter__REFRESH--dropdownContainer--"]')) {
 					foundSortButton = true;
 					if (!document.getElementById('list-view-button')) injectViewToggle();
 				}
