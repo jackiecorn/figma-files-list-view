@@ -1,59 +1,31 @@
-let listView = JSON.parse(localStorage.getItem('files-list-view'));
-let foundSortButton = false;
-const style = document.createElement('style');
-style.type = 'text/css';
-style.innerHTML = `
-.file_tile__REFRESH--image--2LN1i {
-	display: none;
-}
-
-.file_tile__REFRESH--container--3sv1J {
-	height: 44px;
-	width: 100%;
-	margin-bottom: 2px;
-	flex-basis: unset;
-}
-
-.file_tiles_view__REFRESH--fileTiles--2s79s {
-	flex-flow: column;
-	padding-right: 22px;
-}
-
-.file_tile__REFRESH--lowerPart--3oefg {
-	height: 40px;
-}
-
-.file_tile__REFRESH--lowerPartTitles--1BN4q {
-	flex-direction: row;
+const toggleStyle = document.createElement('style');
+toggleStyle.type = 'text/css';
+toggleStyle.innerHTML = `.view-toggle {
+	width: 32px;
+	height: 32px;
+	margin-right: 16px;
+	display: flex;
 	align-items: center;
-	height: 40px;
-	flex-grow: 7;
-	flex-basis: 0;
+	justify-content: center;
+	border-radius: 3px;
 }
-
-.file_tile__REFRESH--title--3_Joz {
-	margin-top: 0px;
-	flex-grow: 1;
-	flex-basis: 0;
+.view-toggle:hover {
+	background-color: rgba(0,0,0,.06);
 }
-
-.file_tile__REFRESH--subtitle--2Ddvq {
-	margin-top: 0px;
-	margin-bottom: 0px;
-	flex-grow: 1;
-	flex-basis: 0;
-}
-
-.face_pile--facePile--p96xt  {
-	flex-grow: 1;
-	flex-basis: 0;
+.view-toggle:active {
+	border-color: #18a0fb;
+	box-shadow: inset 0 0 0 2px #18a0fb;
+	border-radius: 2px;
 }
 `;
-document.head.appendChild(style);
-style.disabled = !listView;
+document.head.appendChild(toggleStyle);
+
+let listView = JSON.parse(localStorage.getItem('files-list-view'));
+let foundSortButton = false;
+let foundTileImage = false;
 
 const injectViewToggle = () => {
-	const sortButton = document.querySelector('div[class*="file_sort_filter__REFRESH--dropdownContainer--"]');
+	const sortButton = document.querySelector('div[class*="file_sort_filter--dropdownContainer--"]');
 	sortButton.parentElement.style.alignItems = 'center';
 	sortButton.style.marginRight = '12px';
 	const listViewButton = document.createElement('div');
@@ -71,22 +43,22 @@ const injectViewToggle = () => {
 	listView = JSON.parse(localStorage.getItem('files-list-view'));
 	if (listView) listViewButton.style.display = 'none';
 	else gridViewButton.style.display = 'none';
-	figmaPlus.addTooltip(listViewButton, 'Show as List', true);
-	figmaPlus.addTooltip(gridViewButton, 'Show as Grid', true);
+	figmaPlus.addTooltip({ element: listViewButton, text: 'Show as List' });
+	figmaPlus.addTooltip({ element: gridViewButton, text: 'Show as Grid' });
 	sortButton.parentElement.appendChild(listViewButton);
 	sortButton.parentElement.appendChild(gridViewButton);
 };
 
 const listViewOn = () => {
 	listView = localStorage.setItem('files-list-view', 'true');
-	style.disabled = false;
+	document.getElementById('file-list-view').disabled = false;
 	document.getElementById('grid-view-button').style.display = '';
 	document.getElementById('list-view-button').style.display = 'none';
 };
 
 const listViewOff = () => {
 	listView = localStorage.setItem('files-list-view', 'false');
-	style.disabled = true;
+	document.getElementById('file-list-view').disabled = true;
 	document.getElementById('list-view-button').style.display = '';
 	document.getElementById('grid-view-button').style.display = 'none';
 };
@@ -103,10 +75,88 @@ figmaPlus.onDomChanged(mutations => {
 	if (!foundSortButton) {
 		for (mutation of mutations) {
 			if (!foundSortButton) {
-				if (document.querySelector('div[class*="file_sort_filter__REFRESH--dropdownContainer--"]')) {
+				if (document.querySelector('div[class*="file_sort_filter--dropdownContainer--"]')) {
 					foundSortButton = true;
 					if (!document.getElementById('list-view-button')) injectViewToggle();
 				}
+			}
+		}
+	}
+});
+
+figmaPlus.onDomChanged(mutations => {
+	for (mutation of mutations) {
+		if (!foundTileImage) {
+			if (
+				document.querySelector('div[class*="file_tile--image"]') &&
+				document.querySelector('div[class*="file_tile--container"]') &&
+				document.querySelector('div[class*="file_tiles_view--fileTiles"]') &&
+				document.querySelector('div[class*="face_pile--facePile"]')
+			) {
+				foundTileImage = true;
+				const image = document.querySelector('div[class*="file_tile--image"]').className;
+				const container = [...document.querySelector('div[class*="file_tile--container"]').classList].find(className =>
+					className.includes('container')
+				);
+				const fileTiles = document.querySelector('div[class*="file_tiles_view--fileTiles"]').className;
+				const lowerPart = [...document.querySelector('div[class*="file_tile--lowerPart--"]').classList].find(
+					className => className.includes('lowerPart')
+				);
+				const lowerPartTitles = [...document.querySelector('div[class*="file_tile--lowerPartTitles"]').classList].find(
+					className => className.includes('lowerPartTitles')
+				);
+				const title = [...document.querySelector('div[class*="file_tile--title"]').classList].find(className =>
+					className.includes('--title--')
+				);
+				const subtitle = [...document.querySelector('div[class*="file_tile--subtitle"]').classList].find(className =>
+					className.includes('--subtitle--')
+				);
+				const facePile = document.querySelector('div[class*="face_pile--facePile"]').className;
+				const style = document.createElement('style');
+				style.id = 'file-list-view';
+				style.type = 'text/css';
+				style.innerHTML = `
+					.${image} {
+						display: none;
+					}
+					.${container} {
+						height: 44px;
+						width: 100%;
+						margin-bottom: 2px;
+						flex-basis: unset;
+					}
+					.${fileTiles} {
+						flex-flow: column;
+						padding-right: 22px;
+					}
+					.${lowerPart} {
+						height: 40px;
+					}
+					.${lowerPartTitles} {
+						flex-direction: row;
+						align-items: center;
+						height: 40px;
+						flex-grow: 7;
+						flex-basis: 0;
+					}
+					.${title} {
+						margin-top: 0px;
+						flex-grow: 1;
+						flex-basis: 0;
+					}
+					.${subtitle} {
+						margin-top: 0px;
+						margin-bottom: 0px;
+						flex-grow: 1;
+						flex-basis: 0;
+					}
+					.${facePile} {
+						flex-grow: 1;
+						flex-basis: 0;
+					}
+					`;
+				document.head.appendChild(style);
+				style.disabled = !listView;
 			}
 		}
 	}
