@@ -157,6 +157,30 @@ figmaPlus.onDomChanged(mutations => {
 					`;
 				document.head.appendChild(style);
 				style.disabled = !listView;
+
+				if (document.getElementById('f-ui')) {
+					toggleStyle.innerHTML = `.view-toggle {
+						width: 32px;
+						height: 32px;
+						margin-right: 16px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						border-radius: 3px;
+					}
+					.view-toggle svg {
+						fill: rgb(193, 197, 201);
+					}
+					.view-toggle:hover {
+						background-color: rgba(255, 255, 255, 0.06);
+					}
+					.view-toggle:active {
+						border-color: #18a0fb;
+						box-shadow: inset 0 0 0 2px #18a0fb;
+						border-radius: 2px;
+					}
+					`;
+				}
 			}
 		}
 	}
