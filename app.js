@@ -21,7 +21,6 @@ toggleStyle.innerHTML = `.view-toggle {
 document.head.appendChild(toggleStyle);
 
 let listView = JSON.parse(localStorage.getItem('files-list-view'));
-let foundSortButton = false;
 let foundTileImage = false;
 
 const injectViewToggle = () => {
@@ -63,23 +62,14 @@ const listViewOff = () => {
 	document.getElementById('grid-view-button').style.display = 'none';
 };
 
-figmaPlus.onFileUnloaded(() => {
-	foundSortButton = false;
-});
-
 figmaPlus.onFileBrowserChanged(() => {
 	if (!document.getElementById('list-view-button')) injectViewToggle();
 });
 
 figmaPlus.onDomChanged(mutations => {
-	if (!foundSortButton) {
-		for (mutation of mutations) {
-			if (!foundSortButton) {
-				if (document.querySelector('div[class*="file_sort_filter--dropdownContainer--"]')) {
-					foundSortButton = true;
-					if (!document.getElementById('list-view-button')) injectViewToggle();
-				}
-			}
+	for (mutation of mutations) {
+		if (document.querySelector('div[class*="file_sort_filter--dropdownContainer--"]')) {
+			if (!document.getElementById('list-view-button')) injectViewToggle();
 		}
 	}
 });
@@ -185,3 +175,7 @@ figmaPlus.onDomChanged(mutations => {
 		}
 	}
 });
+
+if (document.querySelector('div[class*="file_sort_filter--dropdownContainer--"]')) {
+	if (!document.getElementById('list-view-button')) injectViewToggle();
+}
